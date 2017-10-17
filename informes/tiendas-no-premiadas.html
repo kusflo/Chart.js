@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Doughnut Chart</title>
+    <script src="../dist/Chart.bundle.js"></script>
+    <script src="./utils.js"></script>
+    <style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="canvas-holder" style="width:40%">
+        <canvas id="chart-area" />
+    </div>
+    <script>
+        Chart.pluginService.register({
+            beforeRender: function(chart) {
+                if (chart.config.options.showAllTooltips) {
+                    // create an array of tooltips
+                    // we can't use the chart tooltip because there is only one tooltip per chart
+                    chart.pluginTooltips = [];
+                    chart.config.data.datasets.forEach(function(dataset, i) {
+                        chart.getDatasetMeta(i).data.forEach(function(sector, j) {
+                            chart.pluginTooltips.push(new Chart.Tooltip({
+                                _chart: chart.chart,
+                                _chartInstance: chart,
+                                _data: chart.data,
+                                _options: chart.options.tooltips,
+                                _active: [sector]
+                            }, chart));
+                        });
+                    });
+
+                    // turn off normal tooltips
+                    chart.options.tooltips.enabled = false;
+                }
+            },
+            afterDraw: function(chart, easing) {
+                if (chart.config.options.showAllTooltips) {
+                    // we don't want the permanent tooltips to animate, so don't do anything till the animation runs atleast once
+                    if (!chart.allTooltipsOnce) {
+                        if (easing !== 1)
+                            return;
+                        chart.allTooltipsOnce = true;
+                    }
+
+                    // turn on tooltips
+                    chart.options.tooltips.enabled = true;
+                    Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
+                        tooltip.initialize();
+                        tooltip.update();
+                        // we don't actually need this since we are not animating tooltips
+                        tooltip.pivot();
+                        tooltip.transition(easing).draw();
+                    });
+                    chart.options.tooltips.enabled = false;
+                }
+            }
+        });
+
+    var config = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [
+                    12,
+                    51,
+                    50,
+                    78,
+                    81,
+                    40,
+                    107
+                ],
+                backgroundColor: [
+                    window.chartColors.red,
+                    window.chartColors.green,
+                    window.chartColors.blue,
+                    window.chartColors.orange,
+                    window.chartColors.grey,
+                    window.chartColors.purple,
+                    window.chartColors.yellow
+                ],
+                label: 'Dataset 1'
+            }],
+            labels: [
+                "Canarias",
+                "Cantábrica",
+                "Centro",
+                "Levante",
+                "Noreste",
+                "Norte",
+                "Sur"
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'right',
+            },
+            title: {
+                display: true,
+                text: 'Tiendas no premiadas por zonas Septiembre 2017'
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            },
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var allData = data.datasets[tooltipItem.datasetIndex].data;
+                        var tooltipLabel = data.labels[tooltipItem.index];
+                        var tooltipData = allData[tooltipItem.index];
+                        var total = 0;
+                        for (var i in allData) {
+                            total += allData[i];
+                        }
+                        var tooltipPercentage = Math.round((tooltipData / total) * 100);
+                        return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                    }
+                }
+            },
+            showAllTooltips:false
+        }
+    };
+
+    window.onload = function() {
+        var ctx = document.getElementById("chart-area").getContext("2d");
+        window.myDoughnut = new Chart(ctx, config);
+    };
+
+    </script>
+</body>
+
+</html>

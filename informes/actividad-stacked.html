@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Stacked Bar Chart</title>
+    <script src="../dist/Chart.bundle.js"></script>
+    <script src="./utils.js"></script>
+    <style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div style="width: 75%">
+        <canvas id="canvas"></canvas>
+    </div>
+    <script>
+        var barChartData = {
+            labels: ["Septiembre 2017", "Septiembre 2016"],
+            datasets: [{
+                label: 'Rankings',
+                backgroundColor: window.chartColors.red,
+                data: [
+                    10643,
+                    3329
+                ]
+            }, {
+                label: 'Premios',
+                backgroundColor: window.chartColors.blue,
+                data: [
+                    7283,
+                    5405
+                ]
+            }, {
+                label: 'Incentivos Ventas',
+                backgroundColor: window.chartColors.yellow,
+                data: [
+                    3865,
+                    2015
+                ]
+            }, {
+                label: 'Otros Incentivos',
+                backgroundColor: window.chartColors.green,
+                data: [
+                    4096,
+                    186
+                ]
+            }, {
+                label: 'Incentivos Servicios',
+                backgroundColor: window.chartColors.orange,
+                data: [
+                    3935,
+                    1558
+                ]
+            }, {
+                label: 'News',
+                backgroundColor: window.chartColors.black,
+                data: [
+                    329,
+                    146
+                ]
+            }, {
+                label: 'Visitas',
+                backgroundColor: window.chartColors.purple,
+                data: [
+                    13735,
+                    6427
+                ]
+            }, {
+                label: 'Visitantes Únicos',
+                backgroundColor: window.chartColors.grey,
+                data: [
+                    2562,
+                    1679
+                ]
+            }]
+        };
+        window.onload = function() {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myBar = new Chart(ctx, {
+                type: 'bar',
+                data: barChartData,
+                options: {
+                    title:{
+                        display:true,
+                        text:"Actividad de Septiembre 2017 vs. Septiembre 2016"
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                        }],
+                        yAxes: [{
+                            stacked: true
+                        }]
+                    },
+                    legend: {
+                        position: 'right',
+                    },
+                }
+            });
+        };
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Horizontal Bar Chart</title>
+    <script src="../dist/Chart.bundle.js"></script>
+    <script src="./utils.js"></script>
+    <style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="container" style="width: 75%;">
+        <canvas id="canvas"></canvas>
+    </div>
+    <script>
+        var MONTHS = ["CADs", "Coordinadores", "KAMs", "Managers", "Gerentes Externos"];
+        var color = Chart.helpers.color;
+        var horizontalBarChartData = {
+            labels: ["CADs", "Coordinadores", "KAMs", "Managers", "Gerentes Externos"],
+            datasets: [{
+                label: 'Logueados',
+                backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.green,
+                borderWidth: 1,
+                data: [
+                    73,
+                    16,
+                    6,
+                    8,
+                    89
+                ]
+            }, {
+                label: 'No Logueados',
+                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.red,
+                data: [
+                    7,
+                    1,
+                    2,
+                    0,
+                    18
+                ]
+            }]
+
+        };
+
+        window.onload = function() {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myHorizontalBar = new Chart(ctx, {
+                type: 'horizontalBar',
+                data: horizontalBarChartData,
+                options: {
+                    // Elements options apply to all of the options unless overridden in a dataset
+                    // In this case, we are setting the border of each horizontal bar to be 2px wide
+                    elements: {
+                        rectangle: {
+                            borderWidth: 2,
+                        }
+                    },
+                    responsive: true,
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Logueados por jerarquías Septiembre 2017'
+                    }
+                }
+            });
+
+        };
+    </script>
+</body>
+
+</html>

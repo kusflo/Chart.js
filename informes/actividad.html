@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Bar Chart</title>
+    <script src="../dist/Chart.bundle.js"></script>
+    <script src="./utils.js"></script>
+    <style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+</head>
+
+<body>
+<div id="container" style="width: 75%;">
+    <canvas id="canvas"></canvas>
+</div>
+    <script>
+        var MONTHS = ["2016", "2017"];
+        var color = Chart.helpers.color;
+        var barChartData = {
+            labels: ["Septiembre 2017", "Septiembre 2016"],
+            datasets: [{
+                label: 'Rankings',
+                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.red,
+                borderWidth: 1,
+                data: [
+                    10643,
+                    3329
+                ]
+            }, {
+                label: 'Premios',
+                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.blue,
+                borderWidth: 1,
+                data: [
+                    7283,
+                    5405
+                ]
+            }, {
+                label: 'Incentivos Ventas',
+                backgroundColor: color(window.chartColors.yellow).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.yellow,
+                borderWidth: 1,
+                data: [
+                3865,
+                2015
+                ]
+            }, {
+                label: 'Otros Incentivos',
+                backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.green,
+                borderWidth: 1,
+                data: [
+                    4096,
+                    186
+                ]
+            }, {
+                label: 'Incentivos Servicios',
+                backgroundColor: color(window.chartColors.orange).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.orange,
+                borderWidth: 1,
+                data: [
+                    3935,
+                    1558
+                ]
+            }, {
+                label: 'News',
+                backgroundColor: color(window.chartColors.black).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.black,
+                borderWidth: 1,
+                data: [
+                    329,
+                    146
+                ]
+            }, {
+                label: 'Visitas',
+                backgroundColor: color(window.chartColors.purple).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.purple,
+                borderWidth: 1,
+                data: [
+                    13735,
+                    6427
+                ]
+            }, {
+                label: 'Visitantes Únicos',
+                backgroundColor: color(window.chartColors.grey).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.grey,
+                borderWidth: 1,
+                data: [
+                    2562,
+                    1679
+                ]
+            }]
+        };
+
+        window.onload = function() {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myBar = new Chart(ctx, {
+                type: 'bar',
+                data: barChartData,
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Actividad de Septiembre 2017 vs. Septiembre 2016'
+                    }
+                }
+            });
+
+        };
+
+    </script>
+</body>
+
+</html>

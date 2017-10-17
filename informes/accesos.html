@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scriptable > Bubble | Chart.js sample</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <script src="../dist/Chart.js"></script>
+    <script src="./utils.js"></script>
+</head>
+<body>
+<div class="content">
+    <div class="wrapper">
+        <canvas id="chart-0"></canvas>
+    </div>
+</div>
+
+<script>
+
+
+    var utils = Samples.utils;
+
+    function generateY(value){
+        if(value > 0){
+            return utils.rand(0, 500);
+        } else {
+            return utils.rand(0, -500);
+        }
+    }
+
+    function generateData() {
+        var cifs = [
+            'B14621536', 'B90218454', 'B32211575', 'B74065418', 'B08410623', 'B05187539', 'B54037098', 'B96713482', 'B62248588', 'B21306790', 'B92430164',
+            'B29703105', 'B87220968', 'B85606234', 'B62333026', 'B23566524', 'B04709176', 'B02516987', 'B32270332', 'B74321423', 'B96541545',
+            'B38920815', 'B19521335', 'B15410384', 'B23693260', 'B96860259', 'B60177920', 'B09555194', 'B62898978', 'B62176813', 'B84673284',
+            'B17932666', 'B47672480', 'B02276517', 'B91485706', 'B87195970', 'B61082525', 'B14941405', 'B92275460', 'B81963209', 'B62604921',
+            'B87047510', 'B99196883', 'B61966958', 'B76640135', 'B15730526', 'B91053322', 'B95028593', 'B20981312', 'B29838380', 'B06355291',
+            'B53529277', 'B64109960', 'B36399277', 'B91029660', 'B36402212', 'B36363166', 'B06428544', 'B53697611', 'B39440870',
+            'F73874802', 'B96906433', 'B57040875', 'B96812789', 'B20628723', 'B54554779', 'B20700738', 'B63886303', 'B04357760', 'B35400795', 'B27482199',
+            'B38342234', 'B38490983', 'B96998406', 'B98623556', 'B73746984', 'B27719632', 'B90100157', 'B31672348', 'B57353484',
+            'B46840732', 'B38592556', 'B38472304', 'B57056756', 'B95543401', 'B93425577', 'B13351598', 'B04692810', 'B97547715', 'B66973371', 'B96448584',
+            'B91809913', 'B62884721', 'B53627311', 'B13351598', 'B16269391', 'B15577745', 'B25421694', 'B39560503', 'B29732872', 'B17665357',
+            'B66196916', 'B20628723', 'B90202144', 'B96947767', 'B21386552', 'B13603535'
+        ];
+        var accesos = [90,52, 44, 41, 36, 30, 22, 22, 20, 19, 19, 18, 18, 16, 16, 16, 16, 15, 15, 15, 15, 15, 13, 13, 12, 12, 12, 12,
+            11, 11, 11, 11, 11, 11, 10, 10, 10, 9, 9, 9, 9, 9, 9, 9, 8, 8, 8, 8, 7, 7, 7, 6, 6, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 3, 3, 3,
+            3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ];
+        var data = [];
+        var i;
+        for (i = 0; i < cifs.length; ++i) {
+            data.push({
+                label: cifs[i],
+                x: utils.rand(0, 500),
+                y: generateY(accesos[i]),
+                v: accesos[i]
+            });
+        }
+
+        return data;
+
+    }
+
+    function colorize(opaque, context) {
+        var value = context.dataset.data[context.dataIndex];
+        var x = value.x / 100;
+        var y = value.y / 100;
+        var r = x < 0 && y < 0 ? 250 : x < 0 ? 150 : y < 0 ? 50 : 0;
+        var g = x < 0 && y < 0 ? 0 : x < 0 ? 50 : y < 0 ? 150 : 250;
+        var b = x < 0 && y < 0 ? 0 : x > 0 && y > 0 ? 250 : 150;
+        var a = opaque ? 1 : 0.5 * value.v / 1000;
+
+        return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+    }
+
+    var data = {
+        datasets: [{
+            data: generateData()
+        }]
+    };
+    console.log(data);
+    var options = {
+        aspectRatio: 0,
+        legend: false,
+        tooltips: true,
+        elements: {
+            point: {
+                backgroundColor: colorize.bind(null, false),
+                borderColor: colorize.bind(null, true),
+                borderWidth: function (context) {
+                    return Math.min(Math.max(1, context.datasetIndex + 1), 8);
+                },
+//					hoverBackgroundColor: 'transparent',
+                hoverBorderColor: function (context) {
+                    return utils.color(context.datasetIndex);
+                },
+
+                hoverBorderWidth: function (context) {
+                    var value = context.dataset.data[context.dataIndex];
+                    return Math.round(8 * value.v / 1000);
+                },
+                radius: function (context) {
+                    var value = context.dataset.data[context.dataIndex];
+                    var size = context.chart.width;
+//                    var base = Math.abs(value.v) / 1000;
+                    var base = Math.abs(value.v) / 100;
+                    return (size / 24) * base;
+                }
+            }
+        }
+    };
+
+    var chart = new Chart('chart-0', {
+        type: 'bubble',
+        data: data,
+        options: options
+    });
+
+//    Chart.plugins.register({
+//        afterDatasetsDraw: function (chartInstance, easing) {
+//            // To only draw at the end of animation, check for easing === 1
+//            var ctx = chartInstance.chart.ctx;
+//            chartInstance.data.datasets.forEach(function (dataset, i) {
+//                var meta = chartInstance.getDatasetMeta(i);
+//                if (!meta.hidden) {
+//                    meta.data.forEach(function (element, index) {
+//                        // Draw the text in black, with the specified font
+//                        ctx.fillStyle = 'rgb(0, 0, 0)';
+//                        var fontSize = 12;
+//                        var fontStyle = 'bold';
+//                        var fontFamily = 'Helvetica Neue';
+//                        ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+//                        // Just naively convert to string for now
+//                        // <---- ADJUST TO DESIRED TEXT --->
+//                        var dataString = dataset.data[index].label;
+//                        // Make sure alignment settings are correct
+//                        ctx.textAlign = 'center';
+//                        ctx.textBaseline = 'middle';
+//                        var padding = 5;
+//                        var position = element.tooltipPosition();
+//                        ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+//                    });
+//                }
+//            });
+//        }
+//    });
+
+
+</script>
+</body>
+</html>
