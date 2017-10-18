@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Bar Chart</title>
+    <script src="../dist/Chart.bundle.js"></script>
+    <script src="./utils.js"></script>
+    <style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+</head>
+
+<body>
+<div id="container" style="width: 75%;">
+    <canvas id="canvas"></canvas>
+</div>
+    <script>
+        var color = Chart.helpers.color;
+        var barChartData = {
+            labels: ["Reddish"],
+            datasets: [{
+                label: 'General Álvarez De Castro | Madrid',
+                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.red,
+                borderWidth: 1,
+                data: [
+                    50
+                ]
+            }, {
+                label: 'Nextel Future Telecom S.L | Huercal De Almería',
+                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.blue,
+                borderWidth: 1,
+                data: [
+                    50
+                ]
+            }, {
+                label: 'Red Chain | Maliaño',
+                backgroundColor: color(window.chartColors.yellow).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.yellow,
+                borderWidth: 1,
+                data: [
+                    50
+                ]
+            }, {
+                label: 'Grupo Móvil Conectate, S.L | Tres Cantos',
+                backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.green,
+                borderWidth: 1,
+                data: [
+                    50
+                ]
+            }, {
+                label: 'Visasur | C.C. Jerez Norte  Avda. De Europa',
+                backgroundColor: color(window.chartColors.orange).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.orange,
+                borderWidth: 1,
+                data: [
+                    50
+                ]
+            }]
+        };
+
+        window.onload = function() {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myBar = new Chart(ctx, {
+                type: 'bar',
+                data: barChartData,
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tiendas menos premiadas Reddish'
+                    },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                drawOnChartArea: false
+                            }
+                        }]
+                    }
+                }
+            });
+
+        };
+
+    </script>
+</body>
+
+</html>

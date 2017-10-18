@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Bar Chart</title>
+    <script src="../dist/Chart.bundle.js"></script>
+    <script src="./utils.js"></script>
+    <style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+</head>
+
+<body>
+<div id="container" style="width: 75%;">
+    <canvas id="canvas"></canvas>
+</div>
+    <script>
+        var color = Chart.helpers.color;
+        var barChartData = {
+            labels: ["Incentivos"],
+            datasets: [{
+                label: 'Pamplona | Navarra',
+                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.red,
+                borderWidth: 1,
+                data: [
+                    1
+                ]
+            }, {
+                label: 'Santa Cruz de Tenerife',
+                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.blue,
+                borderWidth: 1,
+                data: [
+                    1
+                ]
+            }, {
+                label: 'Santander Monasterio | Cantabria',
+                backgroundColor: color(window.chartColors.yellow).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.yellow,
+                borderWidth: 1,
+                data: [
+                    1
+                ]
+            }, {
+                label: 'Valladolid',
+                backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.green,
+                borderWidth: 1,
+                data: [
+                    1
+                ]
+            }, {
+                label: 'Zaragoza',
+                backgroundColor: color(window.chartColors.orange).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.orange,
+                borderWidth: 1,
+                data: [
+                    1
+                ]
+            }]
+        };
+
+        window.onload = function() {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myBar = new Chart(ctx, {
+                type: 'bar',
+                data: barChartData,
+                scaleOverride : true,
+                scaleSteps : 1,
+                scaleStepWidth : 50,
+                scaleStartValue : 0,
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tiendas menos premiadas Incentivos'
+                    },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                drawOnChartArea: false
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                                max: 5,
+                                stepSize: 1
+                            }
+                        }]
+                    }
+                }
+            });
+
+        };
+
+    </script>
+</body>
+
+</html>
